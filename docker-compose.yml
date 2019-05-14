@@ -1,0 +1,26 @@
+version: "3.5"
+services:
+  nginx:
+    container_name: "front"
+    build: .
+    networks: 
+      - backend
+    ports:
+      - "80:80"
+    links:
+      - fpm
+    depends_on:
+      - fpm
+  fpm:
+    container_name: "back"
+    image: php:fpm
+    networks: 
+      - backend
+    ports:
+      - "9000"
+    volumes:
+      - ./data/:/data/
+networks:
+  backend:
+    name: backend
+    driver: "bridge"
